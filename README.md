@@ -3,9 +3,6 @@
 ## 1. What is the problem you’re solving?
 COVID cases are rising a second time in the states, so individuals need a way to assess their COVID exposure risk based on their day to day activities 
 
-## 1. What is the problem you’re solving?
-Create an application where users fill out a form, marking activities of varying risk levels for contracting COVID, the application will return the user a risk assessment score dependent on location and activities, providing them with testing sites nearby if their risk score is high
-
 ## 2. What is the solution?
 Create an application where users fill out a form, marking activities of varying risk levels for contracting COVID, the application will return the user a risk assessment score dependent on location and activities, providing them with testing sites nearby if their risk score is high
 
