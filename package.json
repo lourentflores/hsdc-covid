@@ -41,12 +41,15 @@
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
+    "google-map-react": "^2.1.9",
+    "google-maps-react": "^2.0.6",
     "express-session": "^1.17.1",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "pg": "^8.5.1",
     "react": "^16.13.1",
     "react-dom": "^16.14.0",
+    "react-google-maps": "^9.4.5",
     "react-router-dom": "^5.2.0"
   }
 }
