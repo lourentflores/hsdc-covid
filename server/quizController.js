@@ -27,7 +27,7 @@ const riskFactor = {
   music: 5,
   religious: 5,
   bar: 5,
-}
+};
 
 const risk = {
   1: 'Low',
@@ -35,30 +35,31 @@ const risk = {
   3: 'Moderate',
   4: 'Moderate High',
   5: 'High',
-}
+};
 
 quizController.calculateRisk = (req, res, next) => {
   // algorithm for calculating risk goes here
-    // iterate over req.body.activities
-    // check if activity against our activity lookup object for the activity's risk value
-    // assign the activities to the risk
-    // assign maxNum to highest risk activity
+  // iterate over req.body.activities
+  // check if activity against our activity lookup object for the activity's risk value
+  // assign the activities to the risk
+  // assign maxNum to highest risk activity
 
   // if this activity, look in riskFactor object for its value
   // example: [mail, gas, grocery, hair, plane]
   const acts = req.body.activities;
   console.log(req.body.activities);
   let max = 0;
-  let maxRisk;  
+  let maxRisk;
   let maxArray;
   // let riskLevel;
-    
-  // i = 0: riskFactor[mail] = 1, 1 > 0, make max = 1, maxArray = [mail] 
+
+  // Note: the below are not 100% reflected in the code below line 61.
+  // i = 0: riskFactor[mail] = 1, 1 > 0, make max = 1, maxArray = [mail]
   // i = 1: riskFactor[gas] = 1, 1 > 1 -> NO, go to else if. 1 === 1 -> YES!, maxArray = [mail, gas]
   // i = 2: riskFactor[grocery] = 2, 2 > 1 -> YES!, make max = 2, maxArray = [grocery]
   // i = 3: riskFactor[hair] =  4, 4 > 2 -> YES!, make max = 4, maxArray = [hair]
   // i = 4; riskFactor[plane] = 4, 4 > 1 -> NO, go to else if. 4 === 4 -> YES!, maxArray = [hair, plane]
-    
+
   for (let i = 0; i < acts.length; i += 1) {
     if (riskFactor[acts[i]] > max) {
       max = riskFactor[acts[i]];
@@ -68,13 +69,13 @@ quizController.calculateRisk = (req, res, next) => {
       maxArray.push(acts[i]);
     }
   }
-  
+
   res.locals.activities = {
     riskLevel: maxRisk,
-    riskyActs: maxArray
-  }
+    riskyActs: maxArray,
+  };
 
   return next();
-}
+};
 
 module.exports = quizController;
