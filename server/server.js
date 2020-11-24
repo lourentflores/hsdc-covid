@@ -143,6 +143,17 @@ app.post('/', quizController.calculateRisk, (req, res) => {
     .send(res.locals);
 });
 
+// ideally would check login credentials here, but skipping until DB and Auth is completed
+app.post('/login', (req, res) => {
+  console.log(req.body);
+  res.status(200).json('Login Successful');
+});
+
+// serve index.html on all the pages
+// app.use('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../index.html'));
+// });
+
 // global error handler
 app.use((err, req, res, next) => {
   console.log(err);

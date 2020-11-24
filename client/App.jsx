@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import AssessmentPage from './components/AssessmentPage.jsx';
 import ResultsPage from './components/ResultsPage.jsx';
 import ErrorPage from './components/ErrorPage.jsx';
+import LoginPage from './components/LoginPage.jsx';
+import ProfilePage from './components/ProfilePage.jsx';
 
 class App extends Component {
   constructor(props) {
@@ -12,6 +14,7 @@ class App extends Component {
       riskLevel: '',
       riskyActs: [],
       answers: [],
+      isLoggedIn: false,
     };
 
     this.submitAnswers = this.submitAnswers.bind(this);
@@ -19,6 +22,12 @@ class App extends Component {
     this.removeFromAnswers = this.removeFromAnswers.bind(this);
     this.getRiskLevel = this.getRiskLevel.bind(this);
     this.getRiskyActs = this.getRiskyActs.bind(this);
+    this.logIn = this.logIn.bind(this);
+  }
+
+  logIn() {
+    this.setState({ ...this.state, isLoggedIn: true });
+    console.log(this.state);
   }
 
   submitAnswers() {
@@ -72,6 +81,18 @@ class App extends Component {
   }
 
   render() {
+    if (this.state.isLoggedIn === false) {
+      return (
+        <div>
+          <h1>Covid Risk Assessment Quiz</h1>
+              <LoginPage
+                isLoggedIn={this.isLoggedIn}
+                logIn={this.logIn}
+              />
+        </div>
+      );
+    }
+
     return (
       <div>
         <h1>Covid Risk Assessment Quiz</h1>
@@ -82,6 +103,10 @@ class App extends Component {
               add={this.addToAnswers}
               remove={this.removeFromAnswers}
             />
+          </Route>
+
+          <Route exact path='/profile'>
+            <ProfilePage></ProfilePage>
           </Route>
 
           <Route path="/results">
