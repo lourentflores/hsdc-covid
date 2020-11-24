@@ -3,7 +3,6 @@ const path = require("path");
 const app = express();
 const PORT = 3000;
 const quizController = require("./quizController.js");
-const quizController = require("./quizController.js");
 const passport = require("passport");
 const session = require("express-session");
 // const flash = require('connect-flash');
@@ -11,7 +10,7 @@ const session = require("express-session");
 // const exphbs = require('express-handlebars');
 
 const localStrategy = require("passport-local").Strategy;
-const pool = require("/userModel");
+const pool = require("./userModel");
 
 app.use(express.json());
 app.use(express.static("public"));
@@ -19,70 +18,70 @@ app.use(express.static("public"));
 // app.set('view engine', 'handlebars');
 
 //allows user to be remembered between requests
-app.use(
-  session({
-    key: "user_id",
-    secret: "lock",
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 600000, secure: false }, //set to true if we set HTTPS
-  })
-);
+// app.use(
+//   session({
+//     key: "user_id",
+//     secret: "lock",
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: { maxAge: 600000, secure: false }, //set to true if we set HTTPS
+//   })
+// );
 
-passport.use(
-  "local",
-  new localStrategy(
-    { passReqToCallback: true, usernameField: "username" },
+// passport.use(
+//   "local",
+//   new localStrategy(
+//     { passReqToCallback: true, usernameField: "username" },
 
-    (req, username, password, done) => {
-      console.log("called local strategy");
-      pool.connect((err, client) => {
-        let user = {};
-        const query = client.query(
-          "SELECT * FROM userstore WHERE username = $1",
-          [username]
-        );
+//     (req, username, password, done) => {
+//       console.log("called local strategy");
+//       pool.connect((err, client) => {
+//         let user = {};
+//         const query = client.query(
+//           "SELECT * FROM userstore WHERE username = $1",
+//           [username]
+//         );
 
-        query.on("row", (row) => {
-          console.log("User obj", row);
-          console.log("Password", password);
-          user = row;
-          if (password === user.password) {
-            console.log("match");
-            done(null, user);
-          } else {
-            done(null, false, { message: "Incorrect username and password" });
-          }
-        });
-        query.on("end", () => client.end());
-        if (err) console.log(err);
-      });
-    }
-  )
-);
+//         query.on("row", (row) => {
+//           console.log("User obj", row);
+//           console.log("Password", password);
+//           user = row;
+//           if (password === user.password) {
+//             console.log("match");
+//             done(null, user);
+//           } else {
+//             done(null, false, { message: "Incorrect username and password" });
+//           }
+//         });
+//         query.on("end", () => client.end());
+//         if (err) console.log(err);
+//       });
+//     }
+//   )
+// );
 
-passport.serializeUser((user, done) => {
-  done(null, user._id);
-});
+// passport.serializeUser((user, done) => {
+//   done(null, user._id);
+// });
 
-passport.deserializeUser((id, done) => {
-  pool.connect((err, client) => {
-    console.log("called deserializedUser");
+// passport.deserializeUser((id, done) => {
+//   pool.connect((err, client) => {
+//     console.log("called deserializedUser");
 
-    let user = {};
-    const query = client.query("SELECT * FROM userstore WHERE id = $1", [id]);
+//     let user = {};
+//     const query = client.query("SELECT * FROM userstore WHERE id = $1", [id]);
 
-    query.on("row", (row) => {
-      console.log("User row", row);
-      user = row;
-      done(null, user);
-    });
-    //After all data is returned, close connection and return results
-    query.on("end", () => client.end());
+//     query.on("row", (row) => {
+//       console.log("User row", row);
+//       user = row;
+//       done(null, user);
+//     });
+//     //After all data is returned, close connection and return results
+//     query.on("end", () => client.end());
 
-    if (err) console.log(err);
-  });
-});
+//     if (err) console.log(err);
+//   });
+// });
 // app.use(passport.initialize());
 // app.use(passport.session());
 // app.use(flash());
@@ -103,32 +102,32 @@ app.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
-app.post(
-  "/",
-  passport.authenticate("local", {
-    successRedirect: "/home",
-    failureRedirect: "/",
-  })
-);
+// app.post(
+//   "/",
+//   passport.authenticate("local", {
+//     successRedirect: "/home",
+//     failureRedirect: "/",
+//   })
+// );
 
 // signup authentication
 // app.get('/register', (req, res) => {
 //   res.status(200).sendFile(path.join(__dirname, '../signup.js'));
 // });
-app.post("/", (req, res) => {
-  pool.connect((err, client) => {
-    const query = client.query(
-      "INSERT INTO userstore (username, password) VALUES ($1, $2)",
-      [req.body.username, req.body.password]
-    );
+// app.post("/", (req, res) => {
+//   pool.connect((err, client) => {
+//     const query = client.query(
+//       "INSERT INTO userstore (username, password) VALUES ($1, $2)",
+//       [req.body.username, req.body.password]
+//     );
 
-    query.on("error", (err) => console.log(err));
-    query.on("end", () => {
-      res.sendStatus(200);
-      client.end();
-    });
-  });
-});
+//     query.on("error", (err) => console.log(err));
+//     query.on("end", () => {
+//       res.sendStatus(200);
+//       client.end();
+//     });
+//   });
+// });
 
 //  test if user is authenticated
 app.get("/", (req, res) => {
