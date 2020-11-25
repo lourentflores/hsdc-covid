@@ -5,3 +5,5 @@ dist/*
 .env
 .cache/
 coverage/
+build/
+config/keys.js
