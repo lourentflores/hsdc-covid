@@ -12,10 +12,13 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      riskLevel: "",
+      riskLevel: '',
       riskyActs: [],
       answers: [],
       isLoggedIn: false,
+      username: '',
+      password: '',
+      quizzes: []
     };
 
     this.submitAnswers = this.submitAnswers.bind(this);
@@ -23,12 +26,50 @@ class App extends Component {
     this.removeFromAnswers = this.removeFromAnswers.bind(this);
     this.getRiskLevel = this.getRiskLevel.bind(this);
     this.getRiskyActs = this.getRiskyActs.bind(this);
-    this.logIn = this.logIn.bind(this);
+    
+    this.login = this.login.bind(this);
+    this.updateUsername = this.updateUsername.bind(this);
+    this.updatePassword = this.updatePassword.bind(this);
+
+    this.getQuizzes = this.getQuizzes.bind(this);
+
   }
 
-  logIn() {
+  // get quizzes here, which will fetch and setState
+  // when do we call it?
+  // call it in the Profile page, on the creation of the page
+
+  getQuizzes() {
+    // fetch('/profile', {
+    //     method: 'GET', 
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify({ username: this.state.username }),
+    //   })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+          
+    //   }).catch(err=>err);
+    const newQuizzes = [
+      {quizid: 0, date: '2020-01-01', score: 100},
+      {quizid: 1, date: '2020-01-02', score: 110},
+      {quizid: 2, date: '2020-01-03', score: 120}
+    ];
+    this.setState({ ...this.state, quizzes: newQuizzes })
+    console.log(newQuizzes);
+}
+
+  updateUsername(passedUsername) {
+    this.setState({ ...this.state, username: passedUsername })
+    console.log(passedUsername);
+  }
+
+  updatePassword(passedPassword) {
+    this.setState({ ...this.state, password: passedPassword })
+    console.log(passedPassword);
+  }
+
+  login() {
     this.setState({ ...this.state, isLoggedIn: true });
-    console.log(this.state);
   }
 
   submitAnswers() {
@@ -82,11 +123,17 @@ class App extends Component {
   }
 
   render() {
+    console.log("About to render: ", this.state);
     if (this.state.isLoggedIn === false) {
       return (
         <div>
           <h1>Covid Risk Assessment Quiz</h1>
-          <LoginPage isLoggedIn={this.isLoggedIn} logIn={this.logIn} />
+          <LoginPage 
+            login={this.login} 
+            isLoggedIn={this.state.isLoggedIn} 
+            updateUsername={this.updateUsername} 
+            updatePassword={this.updatePassword}
+          />
         </div>
       );
     }
@@ -96,15 +143,18 @@ class App extends Component {
         <h1>Covid Risk Assessment Quiz</h1>
         <Switch>
           <Route exact path="/">
+            <ProfilePage 
+              getQuizzes={this.getQuizzes}
+              quizzes={this.state.quizzes}
+              />
+          </Route>
+
+          <Route exact path="/quiz">
             <AssessmentPage
               submitAnswers={this.submitAnswers}
               add={this.addToAnswers}
               remove={this.removeFromAnswers}
             />
-          </Route>
-
-          <Route exact path="/profile">
-            <ProfilePage></ProfilePage>
           </Route>
 
           <Route path="/results">
