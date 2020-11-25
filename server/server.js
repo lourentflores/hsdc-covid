@@ -48,14 +48,21 @@ app.get('*', (req, res) => {
 
 //  will receive the Submit event from the frontend when user completes the quiz
 //  and send assessment result back to frontend:
-app.post('/', quizController.calculateRisk, (req, res) => {
-  res.status(200).send(res.locals);
-  // .redirect('/results');
+app.post("/", quizController.calculateRisk, quizController.addToDb, (req, res) => {
+  res
+    .status(200)
+    .send(res.locals);
 });
 
-// serve index.html on all the pages
-app.use('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../index.html'));
+// ideally would check login credentials here, but skipping until DB and Auth is completed
+app.post("/login", (req, res) => {
+  console.log(req.body);
+  res.status(200).json("Login Successful");
+});
+
+// route handler to send users back to homescreen if typed bad url
+app.get("*", (req, res) => {
+  res.status(200).sendFile(path.join(__dirname, "../index.html"));
 });
 
 // global error handler

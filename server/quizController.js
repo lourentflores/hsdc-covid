@@ -1,5 +1,6 @@
 const path = require('path');
 const quizController = {};
+const pool = require("./userModel");
 
 const riskFactor = {
   mail: 1,
@@ -76,6 +77,54 @@ quizController.calculateRisk = (req, res, next) => {
   };
 
   return next();
+};
+
+quizController.addToDb = (req, res, next) => {
+  // query the quizstore table and create a new row with:
+    // user_id, maxrisk, and today's date
+  const todaysDate = new Date().toISOString().slice(0,10);
+  const risklevel = res.locals.activities.riskLevel;
+  
+  // to update to pull live user session
+  const values = [
+    1,
+    String(todaysDate),
+    String(risklevel)
+  ];
+
+  // console.log('maxrisk = ', maxrisk);
+  const text = `INSERT INTO quizstore (user_id, date, maxrisk) VALUES ($1, $2, $3)`;
+
+  // request sent from server to db (like fetch), passing in our query
+  pool.query(text, values)
+    .then((data) => {
+      console.log(data);
+      next();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+quizController.pullData = (req, res, next) => {
+  console.log('it hits')
+
+  // query quizstore db for historical quiz data
+  const user_id = 3; // placeholder for user id
+  const text = `SELECT date, maxrisk FROM quizstore WHERE user_id = 3 AND date IS NOT NULL ORDER BY date`;
+
+  // send our query over to the db
+  pool.query(text)
+    .then((data) => {
+      console.log(data);
+      console.log(data.rows);
+      res.locals.quizHistory = data.rows;
+      next();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
 };
 
 module.exports = quizController;
