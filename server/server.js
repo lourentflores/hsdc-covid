@@ -1,41 +1,49 @@
-const express = require("express");
-const path = require("path");
+const express = require('express');
+const path = require('path');
 const app = express();
 const PORT = 3000;
-const quizController = require("./quizController.js");
-const passport = require("passport");
-const session = require("express-session");
-// const flash = require('connect-flash');
-// const cookieParser = require('cookie-parser');
-// const exphbs = require('express-handlebars');
+const quizController = require('./quizController.js');
+const passport = require('passport');
+const authRoutes = require('./routes/auth-routes');
+const profileRoutes = require('./routes/profileRoutes');
+const keys = require('../config/keys');
+const cookieSession = require('cookie-session');
 
-const localStrategy = require("passport-local").Strategy;
-const pool = require("./userModel");
+//allows for google strategy to be called by passport and grant permission from google to redirect if successful
+const passportSetup = require('../config/passport-setup');
 
 app.use(express.json());
-app.use(express.static("public"));
 
-// statically serve everything in the build folder on the route '/build'
-app.use("/build", express.static(path.join(__dirname, "../build")));
+//  set up view engine to see on browser
+app.set('view engine', 'ejs');
 
-// route handlers:
-//  login authentication
-//  handle logout
-app.get("/logout", (req, res) => {
-  req.logout();
-  res.redirect("/");
+//  cookie encryption set for a day
+app.use(
+  cookieSession({
+    maxAge: 24 * 60 * 60 * 1000,
+    keys: [keys.session.cookieKey],
+  })
+);
+
+//  initialize passport & sessions for login request
+app.use(passport.initialize());
+app.use(passport.session());
+
+// set up routes associated with authentication
+app.use('/auth', authRoutes);
+app.use('/profile', profileRoutes);
+
+// create home route to view engine in backend
+app.get('/', (req, res) => {
+  res.render('home', { user: req.user });
 });
 
-// route for sending quiz history to client
-app.get("/profile", quizController.pullData, (req, res) => {
-  res
-    .status(200)
-    .json(res.locals.quizHistory);
-});  
+// statically serve everything in the build folder on the route '/build'
+app.use('/build', express.static(path.join(__dirname, '../build')));
 
-//  test if user is authenticated
-app.get("/", (req, res) => {
-  res.send(req.isAuthenticated());
+// route handler to send risk assessment results back to client
+app.get('*', (req, res) => {
+  res.status(200).sendFile(path.join(__dirname, '../index.html'));
 });
 
 //  will receive the Submit event from the frontend when user completes the quiz
@@ -60,7 +68,7 @@ app.get("*", (req, res) => {
 // global error handler
 app.use((err, req, res, next) => {
   console.log(err);
-  res.status(500).send("Internal Server Error");
+  res.status(500).send('Internal Server Error');
 });
 
 //listen
