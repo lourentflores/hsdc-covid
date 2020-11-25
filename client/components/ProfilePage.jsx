@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import styles from '../styles/styles.css';
+import QuizTable from './QuizTable.jsx';
+import AboutWindow from "./AboutWindow.jsx";
 
 class ProfilePage extends Component {
 
@@ -7,21 +9,16 @@ class ProfilePage extends Component {
         super(props);
     }
 
+    componentDidMount() {
+         this.props.getQuizzes();
+    }
 
-    // Build out a get request for the current user logged in to the Db to get all previous scores
-getProfile(){
- fetch('/profile', {
-     method: 'GET',
-     headers: { 'Content-Type': 'application/json' },
-     
- })
-
-
-}
     render() {
         return (
             <div>
-                <p>Hello World</p>
+                <QuizTable quizzes={this.props.quizzes}/>
+                <br/>
+                <AboutWindow />
             </div>
         );
     }
