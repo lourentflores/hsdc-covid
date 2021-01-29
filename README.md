@@ -1,26 +1,25 @@
-# Iteration Project: hsdc-covid
 
-## 1. What is the problem you’re solving?
-COVID cases are rising a second time in the states, so individuals need a way to assess their COVID exposure risk based on their day to day activities 
+## About The Project
+COVID cases are rising a second time in the states, so individuals need a way to assess their COVID exposure risk based on their day to day activities. This application allows users to keep track of their daily activities by answering a questionnaire that assesses their risk level of contracting COVID based on a score that is dependent on their location and marked activities, providing them with testing sites nearby if their risk score is high.
 
-## 1. What is the problem you’re solving?
-Create an application where users fill out a form, marking activities of varying risk levels for contracting COVID, the application will return the user a risk assessment score dependent on location and activities, providing them with testing sites nearby if their risk score is high
+## Built With
+- React with React Router
+- PostgreSQL
+- Node.js
 
-## 2. What is the solution?
-Create an application where users fill out a form, marking activities of varying risk levels for contracting COVID, the application will return the user a risk assessment score dependent on location and activities, providing them with testing sites nearby if their risk score is high
+## Installation
+1. Fork and clone the repo
+2. Run npm install
 
-## 3. What is the project you’re iterating on?
-COVID-19 Risk Assessment
+## Contributing
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are greatly appreciated.
+1. For the project
+2. Create your feature branch `git checkout -b feature/AmazingFeature`
+3. Commit your changes `git commit -m 'Add some AmazingFeature`
+4. Push to the Branch `git push origin feature/AmazingFeature`
+5. Open a Pull Request
 
-## 4. What is the MVP scope?
-Adding a location input with the questionnaire to display risk potential based on the user’s location, suggesting nearby testing sites. Have users login so they have the ability to save their risk assessment on a day by day case, where an overall score is given after a set period of time and have that score be compared with other users in the area. 
-- Getting a user’s location and showing nearby testing sites with Google API
-- Adding login page and holding individual user information in a database / tracking users over multiple days, etc - display on graph
-- Cross referencing the covid data in their geographic area using COVID-19 Data Tracking API
+## License 
+Distributed under the MIT License. See `LICENSE` for more information.
 
-## 5. What are the tough technical challenges involved with solving this problem?
-Pulling external APIs to work with the core features we want to provide, searching through the API data to provide the cross referencing COVID data to the user, setting authentication for each user 
-
-## 6. What are the stretch goals?
-Google OAuth, implementing social media feed with each user
 
