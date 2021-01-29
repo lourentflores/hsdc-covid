@@ -1,4 +1,3 @@
-
 ## About The Project
 COVID cases are rising a second time in the states, so individuals need a way to assess their COVID exposure risk based on their day to day activities. This application allows users to keep track of their daily activities by answering a questionnaire that assesses their risk level of contracting COVID based on a score that is dependent on their location and marked activities, providing them with testing sites nearby if their risk score is high.
 
@@ -21,5 +20,3 @@ Contributions are what make the open source community such an amazing place to b
 
 ## License 
 Distributed under the MIT License. See `LICENSE` for more information.
-
-
